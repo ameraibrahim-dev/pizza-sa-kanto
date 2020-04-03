@@ -1,0 +1,31 @@
+
+body {
+  padding-top: 56px;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f5f0e3;
+}
+
+/* Home */
+h1{
+  font-weight: bold;
+}
+
+#pizza-category {
+  color: red;
+  font-size: 20px;
+  font-weight: normal;
+}
+
+#pizza-icon {
+  margin-right: 10px;
+}
+
+#pasta-category {
+  color: red;
+  font-size: 20px;
+  font-weight: normal;
+}
+
+#pasta-icon {
+  margin-right: 10px;
+}
