@@ -52,8 +52,8 @@ public class AddToCart extends HttpServlet {
 		
 		String message = "Succesfully added " + name + " to cart.";
 		
-		order.createProductID();
-		order.computeTotalPrice();
+		//Facade Design Pattern
+		order.process();
 		cart.addToCart(order);
 		
 		session.setAttribute("cart", cart);

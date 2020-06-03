@@ -28,9 +28,8 @@ public class GoToCart extends HttpServlet {
 		    cart = (Cart)session.getAttribute("cart");
 		}
 		
-		cart.computeGrossPay();
-		cart.computeVAT();
-		cart.computeNetPay();
+		//Facade Design Pattern
+		cart.process();
 		
 		session.setAttribute("cart", cart); //Pushes cart to JSP
 		request.getRequestDispatcher("cart.jsp").forward(request, response);
