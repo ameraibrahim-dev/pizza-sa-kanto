@@ -1,6 +1,6 @@
 package model;
 
-public class ProductOrder{
+public class ProductOrder implements Facade{
 
 	private String productID;
 	private String name;
@@ -162,5 +162,12 @@ public class ProductOrder{
 			break;
 		}
 		
+	}
+	
+	//Facade Design Pattern
+	@Override
+	public void process() {
+		createProductID();
+		 computeTotalPrice(); 
 	}
 }

@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import com.oracle.jrockit.jfr.Producer;
 
-public class Cart implements PizzaSaKantoInterface{
+public class Cart implements Facade{
 	
 	private ArrayList<ProductOrder> cartProducts = new ArrayList<ProductOrder>();
 	
@@ -119,7 +119,7 @@ public class Cart implements PizzaSaKantoInterface{
 	public void clearCart() {
 		cartProducts.clear();
 	}
-	@Override
+
 	public void computeGrossPay() {
 		float sum = 0.0f;
 		
@@ -133,15 +133,23 @@ public class Cart implements PizzaSaKantoInterface{
 		this.grossPay = sum;
 	}
 
-	@Override
+
 	public void computeVAT() {
 		this.VAT = this.grossPay*taxRate;
 		System.out.println(this.VAT);
 	}
 
-	@Override
+
 	public void computeNetPay() {
 		this.netPay = grossPay - VAT;
 		System.out.println(this.netPay);
+	}
+	
+	//Facade Design Pattern
+	@Override
+	public void process() {
+		computeGrossPay();
+		computeVAT();
+		computeNetPay();
 	}
 }
