@@ -45,9 +45,9 @@ public class DeleteItem extends HttpServlet {
 		String message = "Succesfully deleted " + cart.getProductName(deleteItem) + " from cart.";
 		
 		cart.removeFromCart(deleteItem);
-		cart.computeGrossPay();
-		cart.computeVAT();
-		cart.computeNetPay();
+		
+		//Facade Design Pattern
+		cart.process();
 		
 		
 		session.setAttribute("cart", cart); //Pushes cart to JSP
