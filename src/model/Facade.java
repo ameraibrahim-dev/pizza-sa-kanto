@@ -1,7 +1,5 @@
 package model;
 
-public interface PizzaSaKantoInterface {
-	public void computeGrossPay();
-	public void computeVAT();
-	public void computeNetPay();
+public interface Facade {
+	public void process();
 }
