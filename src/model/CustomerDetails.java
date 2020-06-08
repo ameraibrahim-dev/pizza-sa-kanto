@@ -2,7 +2,7 @@ package model;
 
 import java.sql.*;
 
-public class CustomerDetails implements Cloneable{
+public class CustomerDetails{
 
 	private String customerID;
 	
@@ -20,11 +20,6 @@ public class CustomerDetails implements Cloneable{
 		this.emailAddress = emailAddress;
 		this.address = address;
 		setCustomerID();
-	}
-	
-	@Override
-	public Object clone() throws CloneNotSupportedException{
-		return super.clone();
 	}
 
 	public String getCustomerID() {
@@ -79,23 +74,9 @@ public class CustomerDetails implements Cloneable{
 		this.address = address;
 	}
 	
-	public String formatUserInput(String input) {
-		String[] inputs = input.toLowerCase().split(" ");
-		String output = "";
-		
-		for(String string : inputs) {
-			char first = Character.toUpperCase(string.charAt(0));
-			String succeeding = string.substring(1, string.length());
-			string = first + succeeding;
-			output += string + " "; 
-		}
-		
-		return output.trim();
-	}
-	
 	//Check if customer is already in the database
 	public void validateCustomerDetails(Connection connection) {
-		System.out.println("Validating Customer Details...");
+		System.out.println("\nValidating Customer Details...");
 		String sqlStatement = "select customerID from customer_details where customerID = ?";
 		
 		try {
@@ -123,7 +104,7 @@ public class CustomerDetails implements Cloneable{
 	}
 	
 	public boolean addCustomerDetails(Connection connection) {
-		System.out.println("Adding customer in the database...");
+		System.out.println("\nAdding customer in the database...");
 		String sqlStatement = "insert into "
 				+ "customer_details(customerID, firstName, lastName, phoneNumber, emailAddress, "
 				+ "houseNumber, street, barangaySubdivision, city, province, zipcode)"
