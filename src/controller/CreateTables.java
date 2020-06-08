@@ -20,13 +20,13 @@ import utility.CreateTablesDBConnection;
  * Servlet implementation class createtables
  */
 @WebServlet("/createtables.action")
-public class createtables extends HttpServlet {
+public class CreateTables extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public createtables() {
+	public CreateTables() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
