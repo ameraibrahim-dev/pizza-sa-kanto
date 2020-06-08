@@ -15,6 +15,8 @@ import javax.servlet.http.HttpSession;
 import model.Cart;
 import model.CustomerAddress;
 import model.CustomerDetails;
+import model.TestCloneInterface;
+import model.TestSingletonInterface;
 import model.Transaction;
 import model.ValidateUserInput;
 import utility.SingletonDBConnection;
@@ -23,7 +25,7 @@ import utility.SingletonDBConnection;
  * Servlet implementation class ConfirmOrder
  */
 @WebServlet("/ConfirmOrder")
-public class ConfirmOrder extends HttpServlet {
+public class ConfirmOrder extends HttpServlet implements TestSingletonInterface, TestCloneInterface {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -34,7 +36,7 @@ public class ConfirmOrder extends HttpServlet {
 		doPost(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
@@ -87,38 +89,34 @@ public class ConfirmOrder extends HttpServlet {
 			
 			try {
 				//PROTOTYPE - Shallow Clone (Revision: Clone Transaction instead of Customer Details)
-				System.out.println("Cloning Customer Details...");
-				//Clone CustomerDetails
-				CustomerDetails formatCustomerDetails = (CustomerDetails) customerDetails.clone();
+				System.out.println("\nCloning Customer Details...");
+				//Clone Transaction
+				Transaction cloneTransaction = (Transaction) transaction.clone();
 				
-				//Print Original Customer Details before Modification
-				printClone(customerDetails, "ORIGINAL BEFORE MODIFICATION");
-				
-				//Print Cloned Customer Details before Modification
-				printClone(formatCustomerDetails, "CLONED BEFORE MODIFICATION");
-				
-				//Modify Cloned CustomerDetails
-				formatCustomerDetails.setFirstName(formatCustomerDetails.formatUserInput(firstName));
-				formatCustomerDetails.setLastName(formatCustomerDetails.formatUserInput(lastName));
-				formatCustomerDetails.getAddress().setHouseNumber(formatCustomerDetails.formatUserInput(houseNumber));
-				formatCustomerDetails.getAddress().setStreet(formatCustomerDetails.formatUserInput(street));
-				formatCustomerDetails.getAddress().setBarangaySubdivision(formatCustomerDetails.formatUserInput(barangaySubdivision));
-				formatCustomerDetails.getAddress().setCity(formatCustomerDetails.formatUserInput(city));
-				formatCustomerDetails.getAddress().setProvince(formatCustomerDetails.formatUserInput(province));
+				//Print Original Transaction before Modification
+				display(transaction, "Original Transaction before modification");
+						
+				//Print Cloned Transaction before Modification
+				display(cloneTransaction, "Cloned Transaction before modification");
+					
+				//Modify Cloned Transaction
+				cloneTransaction.getDetails().setFirstName(validator.formatUserInput(firstName));
+				cloneTransaction.getDetails().setLastName(validator.formatUserInput(lastName));
+				cloneTransaction.getDetails().getAddress().setHouseNumber(validator.formatUserInput(houseNumber));
+				cloneTransaction.getDetails().getAddress().setStreet(validator.formatUserInput(street));
+				cloneTransaction.getDetails().getAddress().setBarangaySubdivision(validator.formatUserInput(barangaySubdivision));
+				cloneTransaction.getDetails().getAddress().setCity(validator.formatUserInput(city));
+				cloneTransaction.getDetails().getAddress().setProvince(validator.formatUserInput(province));
 				
 				//Test Cloning
-				System.out.println("Check Memory Address: " + 
-						(customerDetails != formatCustomerDetails));
-				System.out.println("Check Class: " + 
-						(customerDetails.getClass() == formatCustomerDetails.getClass()));
-				System.out.println("Check Reference: " + 
-						(customerDetails.equals(formatCustomerDetails)));
+				testClone(transaction, cloneTransaction);
 				
-				//Print Original Customer Details after Modification
-				printClone(customerDetails, "ORIGINAL AFTER MODIFICATION");
 				
-				//Print Cloned Customer Details after Modification
-				printClone(formatCustomerDetails, "CLONED AFTER MODIFICATION");
+				//Print Original Transaction after Modification
+				display(transaction, "Original Transaction after modification");
+						
+				//Print Cloned Transaction after Modification
+				display(cloneTransaction, "Cloned Transaction after modification");
 				
 			} catch (CloneNotSupportedException e1) {
 				// TODO Auto-generated catch block
@@ -126,14 +124,15 @@ public class ConfirmOrder extends HttpServlet {
 			}
 			
 			//Test Singleton
-			/*try {
-				testObjectEqualsProperties();
+			try {
+				testSingleton();
 			} catch (ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}*/
+			}
 			
 			Connection connection = null;
+			
 			try {
 				connection = SingletonDBConnection.getConnection();
 			} catch (ClassNotFoundException e) {
@@ -146,9 +145,9 @@ public class ConfirmOrder extends HttpServlet {
 			
 			//Add transaction to database.
 			if (transaction.addTransaction(connection)) {
-				System.out.println("Transaction successfully inserted to database.");
+				System.out.println("\nTransaction successfully inserted to database.");
 			} else {
-				System.out.println("Something went wrong. Please Try Again.");
+				System.out.println("\nSomething went wrong. Please Try Again.");
 			}
 
 			session.setAttribute("cart", cart);
@@ -167,21 +166,9 @@ public class ConfirmOrder extends HttpServlet {
 
 	}
 	
-	public static void printClone(CustomerDetails details, String status) {
-		System.out.println(status);
-		System.out.println(details.getFirstName());
-		System.out.println(details.getLastName());
-		System.out.println(details.getPhoneNumber());
-		System.out.println(details.getEmailAddress());
-		System.out.println(details.getAddress().getHouseNumber());
-		System.out.println(details.getAddress().getStreet());
-		System.out.println(details.getAddress().getBarangaySubdivision());
-		System.out.println(details.getAddress().getCity());
-		System.out.println(details.getAddress().getProvince());
-		System.out.println(details.getAddress().getZipCode());
-	}
-	
-	public static void testObjectEqualsProperties() throws ClassNotFoundException {
+	@Override
+	public void testSingleton() throws ClassNotFoundException {
+		System.out.println("\nTesting Singleton...");
 		Connection x = SingletonDBConnection.getConnection();
 		Connection y = SingletonDBConnection.getConnection();
 		Connection z = SingletonDBConnection.getConnection();
@@ -211,7 +198,7 @@ public class ConfirmOrder extends HttpServlet {
 		}
 		
 		//Test Consistent Property using Transitive Property
-		System.out.println("TESTING CONSISTENT PROPERTY");
+		System.out.println("\nTesting Consistent Property...");
 		for (int counter = 1; counter <=10; counter++) {
 			if(x.equals(y) && y.equals(z) && z.equals(x)) {
 				System.out.println("Passed Transitive Property: (x.equals(y) && y.equals(z) && z.equals(x))");
@@ -222,7 +209,7 @@ public class ConfirmOrder extends HttpServlet {
 		}
 		
 		//Test Non- null reference
-		System.out.println("TESTING NON-NULL REFERENCE VALUE");
+		System.out.println("\nTesting Non-null Reference Value");
 		if(x.equals(null)) {
 			System.out.println("x is null - failed");
 		}else {
@@ -230,4 +217,29 @@ public class ConfirmOrder extends HttpServlet {
 		}
 	}
 
+	@Override
+	public void testClone(Object original, Object cloned) {
+		System.out.println("\nTesting Clone...");
+		System.out.println("Check Memory Address: " + 
+				(original != cloned));
+		System.out.println("Check Class: " + 
+				(original.getClass() == cloned.getClass()));
+		System.out.println("Check Reference: " + 
+				(original.equals(cloned)));
+	}
+
+	@Override
+	public void display(Object object, String description) {
+		System.out.println("\n" + description);
+		System.out.println("First Name: " + ((Transaction) object).getDetails().getFirstName());
+		System.out.println("Last Name: " + ((Transaction) object).getDetails().getLastName());
+		System.out.println("Phone Number: " + ((Transaction) object).getDetails().getPhoneNumber());
+		System.out.println("Email Address: " + ((Transaction) object).getDetails().getEmailAddress());
+		System.out.println("House Number: " + ((Transaction) object).getDetails().getAddress().getHouseNumber());
+		System.out.println("Street: " + ((Transaction) object).getDetails().getAddress().getStreet());
+		System.out.println("Barangay/ Subdivision: " + ((Transaction) object).getDetails().getAddress().getBarangaySubdivision());
+		System.out.println("City: " + ((Transaction) object).getDetails().getAddress().getCity());
+		System.out.println("Province: " + ((Transaction) object).getDetails().getAddress().getProvince());
+		System.out.println("Zip Code: " + ((Transaction) object).getDetails().getAddress().getZipCode());
+	}
 }
