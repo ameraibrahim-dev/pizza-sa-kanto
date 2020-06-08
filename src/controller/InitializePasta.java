@@ -6,9 +6,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import model.Cart;
 import model.PastaFactory;
 import model.PastaInterface;
 
@@ -24,16 +21,7 @@ public class InitializePasta extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-
-		HttpSession session = request.getSession();
-		Cart cart = null;
-		
-		if (session.getAttribute("cart") == null) {
-			cart = new Cart();
-		} else {
-		    cart = (Cart)session.getAttribute("cart");
-		}	
+		//response.getWriter().append("Served at: ").append(request.getContextPath());	
 		
 		PastaInterface chickenAlfredo = new PastaFactory().getPasta("CHICKENALFREDO");
 		PastaInterface spaghettiMeatballs = new PastaFactory().getPasta("SPAGHETTIMEATBALLS");
