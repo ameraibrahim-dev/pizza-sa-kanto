@@ -5,7 +5,7 @@ import java.util.Hashtable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ValidateUserInput implements ValidatorInterface {
+public class ValidateUserInput implements ValidatorInterface, FormatterInterface {
 
 	private boolean isValidFirstName = false;
 	private boolean isValidLastName = false;
@@ -237,5 +237,19 @@ public class ValidateUserInput implements ValidatorInterface {
 			alternate = !alternate;
 		}
 		return (sum % 10 == 0);
+	}
+
+	@Override
+	public String formatUserInput(String input) {
+			String[] inputs = input.toLowerCase().split(" ");
+			String output = "";
+			
+			for(String string : inputs) {
+				char first = Character.toUpperCase(string.charAt(0));
+				String succeeding = string.substring(1, string.length());
+				string = first + succeeding;
+				output += string + " "; 
+			}
+			return output.trim();
 	}
 }
