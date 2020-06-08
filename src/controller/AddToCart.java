@@ -36,17 +36,11 @@ public class AddToCart extends HttpServlet {
 		}
 		
 		String name = request.getParameter("name");
-		System.out.println(name);
 		String category = request.getParameter("category");
-		System.out.println(category);
 		String description = request.getParameter("description");
-		System.out.println(description);
 		String imageSource = request.getParameter("imageSource");
-		System.out.println(imageSource);
 		String size = request.getParameter("size");
-		System.out.println(size);
 		int quantity = Integer.parseInt(request.getParameter("quantity"));
-		System.out.println(quantity);
 
 		ProductOrder order = new ProductOrder(name, category, description, imageSource, size, quantity);
 		

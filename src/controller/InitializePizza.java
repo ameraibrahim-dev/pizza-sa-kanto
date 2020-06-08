@@ -6,11 +6,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import model.Cart;
-import model.PastaFactory;
-import model.PastaInterface;
 import model.PizzaFactory;
 import model.PizzaInterface;
 
@@ -26,26 +21,16 @@ public class InitializePizza extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		
-		HttpSession session = request.getSession();
-		Cart cart = null;
-		
-		if (session.getAttribute("cart") == null) {
-			cart = new Cart();
-		} else {
-		    cart = (Cart)session.getAttribute("cart");
-		}		
+		//response.getWriter().append("Served at: ").append(request.getContextPath());	
 		
 		PizzaInterface hawaiian = new PizzaFactory().getPizza("HAWAIIAN");
 		PizzaInterface fourSeasons = new PizzaFactory().getPizza("FOURSEASONS");
 		PizzaInterface roastedGarlicShrimp = new PizzaFactory().getPizza("ROASTEDGARLICSHRIMP");
-	
 		
 		request.setAttribute("hawaiian", hawaiian);
 		request.setAttribute("fourSeasons", fourSeasons);
 		request.setAttribute("roastedGarlicShrimp", roastedGarlicShrimp);
-		
+
 		request.getRequestDispatcher("pizza.jsp").forward(request, response);
 	}
 

@@ -3,8 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.oracle.jrockit.jfr.Producer;
-
 public class Cart implements Facade{
 	
 	private ArrayList<ProductOrder> cartProducts = new ArrayList<ProductOrder>();
@@ -63,7 +61,6 @@ public class Cart implements Facade{
 	}
 
 	public void addToCart(ProductOrder product) {
-		System.out.println("addToCart() is called");
 		boolean itemInCart = false;
 		
 		//Check if product is already in cart
@@ -105,7 +102,7 @@ public class Cart implements Facade{
 	
 	public String getProductName(String productID) {
 		String productName = null;
-		Iterator productsIterator = cartProducts.iterator();
+		Iterator<ProductOrder> productsIterator = cartProducts.iterator();
 		
 		while (productsIterator.hasNext()) {
 			ProductOrder product = (ProductOrder) productsIterator.next();
@@ -123,7 +120,7 @@ public class Cart implements Facade{
 	public void computeGrossPay() {
 		float sum = 0.0f;
 		
-		Iterator productsIterator = cartProducts.iterator();
+		Iterator<ProductOrder> productsIterator = cartProducts.iterator();
 		
 		while (productsIterator.hasNext()) {
 			ProductOrder product = (ProductOrder) productsIterator.next();
@@ -136,13 +133,11 @@ public class Cart implements Facade{
 
 	public void computeVAT() {
 		this.VAT = this.grossPay*taxRate;
-		System.out.println(this.VAT);
 	}
 
 
 	public void computeNetPay() {
 		this.netPay = grossPay - VAT;
-		System.out.println(this.netPay);
 	}
 	
 	//Facade Design Pattern
