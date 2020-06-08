@@ -101,7 +101,6 @@ public class ProductOrder implements Facade{
 		}
 		
 		this.productID = ID + size;
-		System.out.println(productID);
 	}
 
 	public void computeTotalPrice() {
