@@ -17,15 +17,15 @@ public class ValidateUserInput implements ValidatorInterface, FormatterInterface
 	private boolean isValidCity = false;
 	private boolean isValidProvince = false;
 	private boolean isValidZipCode = false;
-	
+
 	private String paymentType;
 	private boolean isValidCardNumber = false;
-	
+
 	private Dictionary<String, String> errors = new Hashtable<String, String>();
 
-
 	public ValidateUserInput(String firstName, String lastName, String phoneNumber, String emailAddress, String street,
-			String barangaySubdivision, String city, String province, String zipCode, String paymentType, String cardNumber) {
+			String barangaySubdivision, String city, String province, String zipCode, String paymentType,
+			String cardNumber) {
 		this.isValidFirstName = validateTextFormat(firstName);
 		this.isValidLastName = validateTextFormat(lastName);
 		this.isValidPhoneNumber = phoneNumber.length() == 11 && validateNumberFormat(phoneNumber);
@@ -39,10 +39,10 @@ public class ValidateUserInput implements ValidatorInterface, FormatterInterface
 		this.paymentType = cardNumber;
 		this.isValidCardNumber = validateNumberFormat(cardNumber) && validateCardNumber(cardNumber);
 	}
-	
+
 	public ValidateUserInput() {
 	}
-	
+
 	public Dictionary<String, String> getErrors() {
 		return errors;
 	}
@@ -142,42 +142,43 @@ public class ValidateUserInput implements ValidatorInterface, FormatterInterface
 	public boolean validUserInput() {
 		if (paymentType.contentEquals("card")) {
 			return isValidFirstName && isValidLastName && isValidPhoneNumber && isValidEmailAddress && isValidStreet
-					&& isValidBarangaySubdivision && isValidCity && isValidProvince & isValidZipCode && isValidCardNumber;
-		}else {
+					&& isValidBarangaySubdivision && isValidCity && isValidProvince & isValidZipCode
+					&& isValidCardNumber;
+		} else {
 			return isValidFirstName && isValidLastName && isValidPhoneNumber && isValidEmailAddress && isValidStreet
-			&& isValidBarangaySubdivision && isValidCity && isValidProvince & isValidZipCode;
+					&& isValidBarangaySubdivision && isValidCity && isValidProvince & isValidZipCode;
 		}
 	}
-	
+
 	public void setErrors() {
-		if(!isValidFirstName) {
+		if (!isValidFirstName) {
 			errors.put("firstName", "Invalid, Letters only.");
 		}
-		if(!isValidLastName) {
+		if (!isValidLastName) {
 			errors.put("lastName", "Invalid, Letters only.");
 		}
-		if(!isValidPhoneNumber) {
+		if (!isValidPhoneNumber) {
 			errors.put("phoneNumber", "Invalid, Numbers only/ must Contain 11 digits.");
 		}
-		if(!isValidEmailAddress) {
+		if (!isValidEmailAddress) {
 			errors.put("emailAddress", "Invalid, please include '@'. ");
 		}
-		if(!isValidStreet) {
+		if (!isValidStreet) {
 			errors.put("street", "Invalid, Letters only.");
 		}
-		if(!isValidBarangaySubdivision) {
+		if (!isValidBarangaySubdivision) {
 			errors.put("barangaySubdivision", "Invalid, Letters only.");
 		}
-		if(!isValidCity) {
+		if (!isValidCity) {
 			errors.put("city", "Invalid, Letters only.");
 		}
-		if(!isValidProvince) {
+		if (!isValidProvince) {
 			errors.put("province", "Invalid, Letters only.");
 		}
-		if(!isValidZipCode) {
+		if (!isValidZipCode) {
 			errors.put("zipCode", "Invalid, Numbers Only/ Must contain 4 digits.");
 		}
-		if(!isValidCardNumber) {
+		if (!isValidCardNumber) {
 			errors.put("cardNumber", "Invalid Card Number/ Numbers Only.");
 		}
 	}
@@ -241,15 +242,15 @@ public class ValidateUserInput implements ValidatorInterface, FormatterInterface
 
 	@Override
 	public String formatUserInput(String input) {
-			String[] inputs = input.toLowerCase().split(" ");
-			String output = "";
-			
-			for(String string : inputs) {
-				char first = Character.toUpperCase(string.charAt(0));
-				String succeeding = string.substring(1, string.length());
-				string = first + succeeding;
-				output += string + " "; 
-			}
-			return output.trim();
+		String[] inputs = input.toLowerCase().split(" ");
+		String output = "";
+
+		for (String string : inputs) {
+			char first = Character.toUpperCase(string.charAt(0));
+			String succeeding = string.substring(1, string.length());
+			string = first + succeeding;
+			output += string + " ";
+		}
+		return output.trim();
 	}
 }

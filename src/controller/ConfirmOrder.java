@@ -36,7 +36,7 @@ public class ConfirmOrder extends HttpServlet implements TestSingletonInterface,
 		doPost(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
@@ -82,68 +82,71 @@ public class ConfirmOrder extends HttpServlet implements TestSingletonInterface,
 				barangaySubdivision, city, province, zipCode, paymentType, cardNumber);
 
 		if (validator.validUserInput()) {
-			
-			CustomerAddress customerAddress = new CustomerAddress(houseNumber, street, barangaySubdivision, city, province, zipCode);
-			CustomerDetails customerDetails = new CustomerDetails(firstName, lastName, phoneNumber, emailAddress, customerAddress);
+
+			CustomerAddress customerAddress = new CustomerAddress(houseNumber, street, barangaySubdivision, city,
+					province, zipCode);
+			CustomerDetails customerDetails = new CustomerDetails(firstName, lastName, phoneNumber, emailAddress,
+					customerAddress);
 			Transaction transaction = new Transaction(customerDetails, cart);
-			
+
 			try {
-				//PROTOTYPE - Shallow Clone (Revision: Clone Transaction instead of Customer Details)
+				// PROTOTYPE - Shallow Clone (Revision: Clone Transaction instead of Customer
+				// Details)
 				System.out.println("\nCloning Customer Details...");
-				//Clone Transaction
+				// Clone Transaction
 				Transaction cloneTransaction = (Transaction) transaction.clone();
-				
-				//Print Original Transaction before Modification
+
+				// Print Original Transaction before Modification
 				display(transaction, "Original Transaction before modification");
-						
-				//Print Cloned Transaction before Modification
+
+				// Print Cloned Transaction before Modification
 				display(cloneTransaction, "Cloned Transaction before modification");
-					
-				//Modify Cloned Transaction
+
+				// Modify Cloned Transaction
 				cloneTransaction.getDetails().setFirstName(validator.formatUserInput(firstName));
 				cloneTransaction.getDetails().setLastName(validator.formatUserInput(lastName));
 				cloneTransaction.getDetails().getAddress().setHouseNumber(validator.formatUserInput(houseNumber));
 				cloneTransaction.getDetails().getAddress().setStreet(validator.formatUserInput(street));
-				cloneTransaction.getDetails().getAddress().setBarangaySubdivision(validator.formatUserInput(barangaySubdivision));
+				cloneTransaction.getDetails().getAddress()
+						.setBarangaySubdivision(validator.formatUserInput(barangaySubdivision));
 				cloneTransaction.getDetails().getAddress().setCity(validator.formatUserInput(city));
 				cloneTransaction.getDetails().getAddress().setProvince(validator.formatUserInput(province));
-				
-				//Test Cloning
+
+				// Test Cloning
 				testClone(transaction, cloneTransaction);
-				
-				
-				//Print Original Transaction after Modification
+
+				// Print Original Transaction after Modification
 				display(transaction, "Original Transaction after modification");
-						
-				//Print Cloned Transaction after Modification
+
+				// Print Cloned Transaction after Modification
 				display(cloneTransaction, "Cloned Transaction after modification");
-				
+
 			} catch (CloneNotSupportedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
-			//Test Singleton
+
+			// Test Singleton
 			try {
 				testSingleton();
 			} catch (ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
+
 			Connection connection = null;
-			
+
 			try {
 				connection = SingletonDBConnection.getConnection();
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			//Check if customer is already in the database
+
+			// Check if customer is already in the database
 			customerDetails.validateCustomerDetails(connection);
-			
-			//Add transaction to database.
+
+			// Add transaction to database.
 			if (transaction.addTransaction(connection)) {
 				System.out.println("\nTransaction successfully inserted to database.");
 			} else {
@@ -156,7 +159,7 @@ public class ConfirmOrder extends HttpServlet implements TestSingletonInterface,
 			cart.clearCart();
 		} else {
 			validator.setErrors();
-			
+
 			session.setAttribute("cart", cart);
 			request.setAttribute("validator", validator);
 			request.setAttribute("userInput", userInput);
@@ -165,54 +168,54 @@ public class ConfirmOrder extends HttpServlet implements TestSingletonInterface,
 		}
 
 	}
-	
+
 	@Override
 	public void testSingleton() throws ClassNotFoundException {
 		System.out.println("\nTesting Singleton...");
 		Connection x = SingletonDBConnection.getConnection();
 		Connection y = SingletonDBConnection.getConnection();
 		Connection z = SingletonDBConnection.getConnection();
-		
-		//Reflexive Property
-		if(x.equals(x)) {
+
+		// Reflexive Property
+		if (x.equals(x)) {
 			System.out.println("Passed Reflexive Property: (x.equals(x))");
-		}else {
+		} else {
 
 			System.out.println("Not Passed Reflexive Property: (x.equals(x))");
 		}
-		
-		//Symmetric Property 
-		if(x.equals(y) && y.equals(x)) {
+
+		// Symmetric Property
+		if (x.equals(y) && y.equals(x)) {
 			System.out.println("Passed Symmetric Property: (x.equals(y) && y.equals(x))");
-		}else {
+		} else {
 
 			System.out.println("Not Passed Symmetric Property: (x.equals(y) && y.equals(x))");
 		}
-		
-		//Transitive Property
-		if(x.equals(y) && y.equals(z) && z.equals(x)) {
+
+		// Transitive Property
+		if (x.equals(y) && y.equals(z) && z.equals(x)) {
 			System.out.println("Passed Transitive Property: (x.equals(y) && y.equals(z) && z.equals(x))");
-		}else {
+		} else {
 
 			System.out.println("Not Passed Transitive Property: (x.equals(y) && y.equals(z) && z.equals(x))");
 		}
-		
-		//Test Consistent Property using Transitive Property
+
+		// Test Consistent Property using Transitive Property
 		System.out.println("\nTesting Consistent Property...");
-		for (int counter = 1; counter <=10; counter++) {
-			if(x.equals(y) && y.equals(z) && z.equals(x)) {
+		for (int counter = 1; counter <= 10; counter++) {
+			if (x.equals(y) && y.equals(z) && z.equals(x)) {
 				System.out.println("Passed Transitive Property: (x.equals(y) && y.equals(z) && z.equals(x))");
-			}else {
+			} else {
 
 				System.out.println("Not Passed Transitive Property: (x.equals(y) && y.equals(z) && z.equals(x))");
 			}
 		}
-		
-		//Test Non- null reference
+
+		// Test Non- null reference
 		System.out.println("\nTesting Non-null Reference Value");
-		if(x.equals(null)) {
+		if (x.equals(null)) {
 			System.out.println("x is null - failed");
-		}else {
+		} else {
 			System.out.println("x is not null - passed");
 		}
 	}
@@ -220,12 +223,9 @@ public class ConfirmOrder extends HttpServlet implements TestSingletonInterface,
 	@Override
 	public void testClone(Object original, Object cloned) {
 		System.out.println("\nTesting Clone...");
-		System.out.println("Check Memory Address: " + 
-				(original != cloned));
-		System.out.println("Check Class: " + 
-				(original.getClass() == cloned.getClass()));
-		System.out.println("Check Reference: " + 
-				(original.equals(cloned)));
+		System.out.println("Check Memory Address: " + (original != cloned));
+		System.out.println("Check Class: " + (original.getClass() == cloned.getClass()));
+		System.out.println("Check Reference: " + (original.equals(cloned)));
 	}
 
 	@Override
@@ -237,7 +237,8 @@ public class ConfirmOrder extends HttpServlet implements TestSingletonInterface,
 		System.out.println("Email Address: " + ((Transaction) object).getDetails().getEmailAddress());
 		System.out.println("House Number: " + ((Transaction) object).getDetails().getAddress().getHouseNumber());
 		System.out.println("Street: " + ((Transaction) object).getDetails().getAddress().getStreet());
-		System.out.println("Barangay/ Subdivision: " + ((Transaction) object).getDetails().getAddress().getBarangaySubdivision());
+		System.out.println(
+				"Barangay/ Subdivision: " + ((Transaction) object).getDetails().getAddress().getBarangaySubdivision());
 		System.out.println("City: " + ((Transaction) object).getDetails().getAddress().getCity());
 		System.out.println("Province: " + ((Transaction) object).getDetails().getAddress().getProvince());
 		System.out.println("Zip Code: " + ((Transaction) object).getDetails().getAddress().getZipCode());

@@ -30,7 +30,7 @@ public class InitializePizza extends HttpServlet {
 		request.setAttribute("hawaiian", hawaiian);
 		request.setAttribute("fourSeasons", fourSeasons);
 		request.setAttribute("roastedGarlicShrimp", roastedGarlicShrimp);
-		
+
 		request.getRequestDispatcher("pizza.jsp").forward(request, response);
 	}
 
