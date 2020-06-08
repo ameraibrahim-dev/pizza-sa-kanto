@@ -3,10 +3,8 @@ package model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class Transaction {
+public class Transaction implements Cloneable{
 	
 	private CustomerDetails details;
 	private Cart cart;
@@ -15,7 +13,12 @@ public class Transaction {
 		this.details = details;
 		this.cart = cart;
 	}
-
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException{
+		return super.clone();
+	}
+	
 	public CustomerDetails getDetails() {
 		return details;
 	}
@@ -33,7 +36,7 @@ public class Transaction {
 	}
 	
 	public boolean addTransaction(Connection connection) {
-		System.out.println("Adding transaction in the database...");
+		System.out.println("\nAdding transaction in the database...");
 		String sqlStatement = "insert into "
 				+ "transactions(customerID, transaction_grossPay, transaction_VAT, transaction_netPay)"
 				+ "values (?,?,?,?)";
