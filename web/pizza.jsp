@@ -38,7 +38,7 @@ ${main} ${navbar}
 								<div class="form-group">
 									<small>Size</small> 
 									<select
-										class="form-control" name="size"
+										class="custom-select form-control" name="size"
 										id="hawaiianSize" required="required">
 										<option value="9">9" - 315</option>
 										<option value="12">12" - 525</option>
@@ -85,7 +85,7 @@ ${main} ${navbar}
 								<div class="form-group">
 									<small>Size</small> 
 									<select
-										class="form-control" name="size"
+										class="custom-select form-control" name="size"
 										id="fourSeasonsSize" required="required">
 										<option value="9">9" - 525</option>
 										<option value="12">12" - 735</option>
@@ -134,7 +134,7 @@ ${main} ${navbar}
 								<div class="form-group">
 									<small>Size</small> 
 									<select
-										class="form-control" name="size"
+										class="custom-select form-control" name="size"
 										id="roastedGarlicShrimpSize" required="required">
 										<option value="9">9" - 420</option>
 										<option value="12">12" - 630</option>

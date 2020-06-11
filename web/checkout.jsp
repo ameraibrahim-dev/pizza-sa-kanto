@@ -101,7 +101,7 @@ ${main} ${navbar}
 						<div class="form-group">
 						<input class="selectedPaymentType" type="hidden" value="${userInput.get('paymentType')}"/>
 							<small>Payment Type</small> <select
-								class="form-control paymentType" name="paymentType"
+								class="custom-select form-control paymentType" name="paymentType"
 								id="paymentType" required="required">
 									<option class="cash" value="cash">Cash On
 										Delivery</option>

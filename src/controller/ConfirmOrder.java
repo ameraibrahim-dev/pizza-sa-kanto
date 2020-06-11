@@ -2,6 +2,9 @@ package controller;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -83,6 +86,9 @@ public class ConfirmOrder extends HttpServlet implements TestSingletonInterface,
 
 		if (validator.validUserInput()) {
 
+			Connection connection = null;
+			Boolean testSingleton = false;
+			
 			CustomerAddress customerAddress = new CustomerAddress(houseNumber, street, barangaySubdivision, city,
 					province, zipCode);
 			CustomerDetails customerDetails = new CustomerDetails(firstName, lastName, phoneNumber, emailAddress,
@@ -90,7 +96,7 @@ public class ConfirmOrder extends HttpServlet implements TestSingletonInterface,
 			Transaction transaction = new Transaction(customerDetails, cart);
 
 			try {
-				// PROTOTYPE - Shallow Clone (Revision: Clone Transaction instead of Customer
+				// PROTOTYPE - Shallow 
 				// Details)
 				System.out.println("\nCloning Customer Details...");
 				// Clone Transaction
@@ -128,13 +134,11 @@ public class ConfirmOrder extends HttpServlet implements TestSingletonInterface,
 
 			// Test Singleton
 			try {
-				testSingleton();
+				testSingleton = testSingleton();
 			} catch (ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-
-			Connection connection = null;
 
 			try {
 				connection = SingletonDBConnection.getConnection();
@@ -143,14 +147,17 @@ public class ConfirmOrder extends HttpServlet implements TestSingletonInterface,
 				e.printStackTrace();
 			}
 
-			// Check if customer is already in the database
-			customerDetails.validateCustomerDetails(connection);
+			//if database exists
+			if(testSingleton) {
+				// Check if customer is already in the database
+				customerDetails.validateCustomerDetails(connection);
 
-			// Add transaction to database.
-			if (transaction.addTransaction(connection)) {
-				System.out.println("\nTransaction successfully inserted to database.");
-			} else {
-				System.out.println("\nSomething went wrong. Please Try Again.");
+				// Add transaction to database.
+				if (transaction.addTransaction(connection)) {
+					System.out.println("\nTransaction successfully inserted to database.");
+				} else {
+					System.out.println("\nSomething went wrong. Please Try Again.");
+				}
 			}
 
 			session.setAttribute("cart", cart);
@@ -170,54 +177,81 @@ public class ConfirmOrder extends HttpServlet implements TestSingletonInterface,
 	}
 
 	@Override
-	public void testSingleton() throws ClassNotFoundException {
-		System.out.println("\nTesting Singleton...");
-		Connection x = SingletonDBConnection.getConnection();
-		Connection y = SingletonDBConnection.getConnection();
-		Connection z = SingletonDBConnection.getConnection();
-
-		// Reflexive Property
-		if (x.equals(x)) {
-			System.out.println("Passed Reflexive Property: (x.equals(x))");
-		} else {
-
-			System.out.println("Not Passed Reflexive Property: (x.equals(x))");
-		}
-
-		// Symmetric Property
-		if (x.equals(y) && y.equals(x)) {
-			System.out.println("Passed Symmetric Property: (x.equals(y) && y.equals(x))");
-		} else {
-
-			System.out.println("Not Passed Symmetric Property: (x.equals(y) && y.equals(x))");
-		}
-
-		// Transitive Property
-		if (x.equals(y) && y.equals(z) && z.equals(x)) {
-			System.out.println("Passed Transitive Property: (x.equals(y) && y.equals(z) && z.equals(x))");
-		} else {
-
-			System.out.println("Not Passed Transitive Property: (x.equals(y) && y.equals(z) && z.equals(x))");
-		}
-
-		// Test Consistent Property using Transitive Property
-		System.out.println("\nTesting Consistent Property...");
-		for (int counter = 1; counter <= 10; counter++) {
-			if (x.equals(y) && y.equals(z) && z.equals(x)) {
-				System.out.println("Passed Transitive Property: (x.equals(y) && y.equals(z) && z.equals(x))");
-			} else {
-
-				System.out.println("Not Passed Transitive Property: (x.equals(y) && y.equals(z) && z.equals(x))");
+	public boolean testSingleton() throws ClassNotFoundException {
+		try {
+			Connection connection = SingletonDBConnection.getConnection();
+			ResultSet resultSet = connection.getMetaData().getCatalogs();
+			Statement statement = connection.createStatement();
+			boolean databaseExisting = false;
+			//Iterate each catalog in the ResultSet to check if Database exists
+			while (resultSet.next()) {
+				String databaseName = resultSet.getString(1);
+				if (databaseName.equals("pizzasakantodb")) {
+					databaseExisting = true;
+				}
 			}
-		}
+			resultSet.close();
+			if (databaseExisting) {
+				System.out.println("\nTesting Singleton...");
+				Connection x = connection;
+				Connection y = connection;
+				Connection z = connection;
 
-		// Test Non- null reference
-		System.out.println("\nTesting Non-null Reference Value");
-		if (x.equals(null)) {
-			System.out.println("x is null - failed");
-		} else {
-			System.out.println("x is not null - passed");
+				// Reflexive Property
+				if (x.equals(x)) {
+					System.out.println("Passed Reflexive Property: (x.equals(x))");
+				} else {
+
+					System.out.println("Not Passed Reflexive Property: (x.equals(x))");
+				}
+
+				// Symmetric Property
+				if (x.equals(y) && y.equals(x)) {
+					System.out.println("Passed Symmetric Property: (x.equals(y) && y.equals(x))");
+				} else {
+
+					System.out.println("Not Passed Symmetric Property: (x.equals(y) && y.equals(x))");
+				}
+
+				// Transitive Property
+				if (x.equals(y) && y.equals(z) && z.equals(x)) {
+					System.out.println("Passed Transitive Property: (x.equals(y) && y.equals(z) && z.equals(x))");
+				} else {
+
+					System.out.println("Not Passed Transitive Property: (x.equals(y) && y.equals(z) && z.equals(x))");
+				}
+
+				// Test Consistent Property using Transitive Property
+				System.out.println("\nTesting Consistent Property...");
+				for (int counter = 1; counter <= 10; counter++) {
+					if (x.equals(y) && y.equals(z) && z.equals(x)) {
+						System.out.println("Passed Transitive Property: (x.equals(y) && y.equals(z) && z.equals(x))");
+					} else {
+
+						System.out.println("Not Passed Transitive Property: (x.equals(y) && y.equals(z) && z.equals(x))");
+					}
+				}
+
+				// Test Non- null reference
+				System.out.println("\nTesting Non-null Reference Value");
+				if (x.equals(null)) {
+					System.out.println("x is null - failed");
+				} else {
+					System.out.println("x is not null - passed");
+				}
+				return true;
+			} else {
+				return false;
+			}
+
+		} catch (SQLException se) {
+			se.printStackTrace();
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
+		
 	}
 
 	@Override

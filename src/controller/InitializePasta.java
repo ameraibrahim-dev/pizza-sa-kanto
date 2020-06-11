@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.PastaFactory;
 import model.PastaInterface;
+import model.Product;
+import model.ProductCache;
 
 /**
  * Servlet implementation class InitializePasta
@@ -23,9 +25,17 @@ public class InitializePasta extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());	
 		
-		PastaInterface chickenAlfredo = new PastaFactory().getPasta("CHICKENALFREDO");
+		ProductCache.loadCache();
+		
+		//Abstract Factory
+		/*PastaInterface chickenAlfredo = new PastaFactory().getPasta("CHICKENALFREDO");
 		PastaInterface spaghettiMeatballs = new PastaFactory().getPasta("SPAGHETTIMEATBALLS");
-		PastaInterface shrimpAlfredo = new PastaFactory().getPasta("SHRIMPALFREDO");
+		PastaInterface shrimpAlfredo = new PastaFactory().getPasta("SHRIMPALFREDO");*/
+		
+		//Prototype
+		Product chickenAlfredo = (Product) ProductCache.getProduct("CHICKENALFREDO");
+		Product spaghettiMeatballs = (Product) ProductCache.getProduct("SPAGHETTIMEATBALLS");
+		Product shrimpAlfredo = (Product) ProductCache.getProduct("SHRIMPALFREDO");
 		
 		request.setAttribute("chickenAlfredo", chickenAlfredo);
 		request.setAttribute("spaghettiMeatballs", spaghettiMeatballs);

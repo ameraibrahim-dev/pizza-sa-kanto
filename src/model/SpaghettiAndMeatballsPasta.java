@@ -1,6 +1,6 @@
 package model;
 
-public class SpaghettiAndMeatballsPasta implements PastaInterface {
+public class SpaghettiAndMeatballsPasta extends Product implements PastaInterface {
 
 	private String name;
 	private String category;

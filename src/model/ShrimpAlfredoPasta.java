@@ -1,6 +1,6 @@
 package model;
 
-public class ShrimpAlfredoPasta implements PastaInterface {
+public class ShrimpAlfredoPasta extends Product implements PastaInterface {
 
 	private String name;
 	private String category;
@@ -11,7 +11,7 @@ public class ShrimpAlfredoPasta implements PastaInterface {
 		this.name = "Shrimp Alfredo";
 		this.category = "Pasta";
 		this.description = "Creamy pasta with shrimps, olives, and basil chiffonade";
-		this.imageSource = "images/shrimp-alfredo.png";
+		this.imageSource = "images/shrimp-alfredo.png"; 	
 	}
 	
 	@Override

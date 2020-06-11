@@ -39,7 +39,7 @@ ${main} ${navbar}
 									type="hidden" name="imageSource"
 									value="${chickenAlfredo.imageSource}">
 								<div class="form-group">
-									<small>Size</small> <select id="chickenAlfredoSize" class="form-control" name="size" required="required">
+									<small>Size</small> <select id="chickenAlfredoSize" class="custom-select form-control" name="size" required="required">
 										<option value="Regular">Regular - 210</option>
 										<option value="Large">Large - 380</option>
 									</select>
@@ -91,7 +91,7 @@ ${main} ${navbar}
 								<input type="hidden" name="imageSource"
 									value="${shrimpAlfredo.imageSource}">
 								<div class="form-group">
-									<small>Size</small> <select id="shrimpAlfredoSize" class="form-control" name="size" required="required">
+									<small>Size</small> <select id="shrimpAlfredoSize" class="custom-select form-control" name="size" required="required">
 										<option value="Regular">Regular - 245</option>
 										<option value="Large">Large - 420</option>
 									</select>
@@ -146,7 +146,7 @@ ${main} ${navbar}
 									type="hidden" name="imageSource"
 									value="${spaghettiMeatballs.imageSource}">
 								<div class="form-group">
-									<small>Size</small> <select id="spaghettiMeatballsSize" class="form-control" name="size" required="required">
+									<small>Size</small> <select id="spaghettiMeatballsSize" class="custom-select form-control" name="size" required="required">
 										<option value="Regular">Regular - 210</option>
 										<option value="Large">Large - 380</option>
 									</select>
