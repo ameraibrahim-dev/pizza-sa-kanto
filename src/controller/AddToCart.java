@@ -44,11 +44,11 @@ public class AddToCart extends HttpServlet {
 
 		ProductOrder order = new ProductOrder(name, category, description, imageSource, size, quantity);
 		
-		String message = "Succesfully added " + name + " to cart.";
-		
 		//Facade Design Pattern
 		order.process();
 		cart.addToCart(order);
+	
+		String message = "Succesfully added " + name + " to cart.";
 		
 		session.setAttribute("cart", cart);
 		request.setAttribute("message", message);

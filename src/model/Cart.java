@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Cart implements Facade{
+public class Cart implements Facade, CartIterator{
 	
 	private ArrayList<ProductOrder> cartProducts = new ArrayList<ProductOrder>();
 	
@@ -15,7 +15,8 @@ public class Cart implements Facade{
 	
 	private static float taxRate = 0.12f;
 
-	
+
+	/*	
 	public ArrayList<ProductOrder> getCartProducts() {
 		return cartProducts;
 	}
@@ -23,7 +24,7 @@ public class Cart implements Facade{
 	public void setCartProducts(ArrayList<ProductOrder> cartProducts) {
 		this.cartProducts = cartProducts; 
 	}
-	
+	*/
 	
 	public boolean isCardValid() {
 		return isCardValid;
@@ -146,5 +147,10 @@ public class Cart implements Facade{
 		computeGrossPay();
 		computeVAT();
 		computeNetPay();
+	}
+
+	@Override
+	public Iterator getCartProducts() {
+		return cartProducts.iterator();
 	}
 }
