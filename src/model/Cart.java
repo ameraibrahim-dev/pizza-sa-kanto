@@ -103,7 +103,7 @@ public class Cart implements Facade, CartIterator{
 	
 	public String getProductName(String productID) {
 		String productName = null;
-		Iterator<ProductOrder> productsIterator = cartProducts.iterator();
+		Iterator<ProductOrder> productsIterator = getCartProducts();
 		
 		while (productsIterator.hasNext()) {
 			ProductOrder product = (ProductOrder) productsIterator.next();
@@ -111,6 +111,7 @@ public class Cart implements Facade, CartIterator{
 				productName = product.getName();
 			}
 		}
+		
 		return productName;
 	}
 	
@@ -120,8 +121,7 @@ public class Cart implements Facade, CartIterator{
 
 	public void computeGrossPay() {
 		float sum = 0.0f;
-		
-		Iterator<ProductOrder> productsIterator = cartProducts.iterator();
+		Iterator<ProductOrder> productsIterator = getCartProducts();
 		
 		while (productsIterator.hasNext()) {
 			ProductOrder product = (ProductOrder) productsIterator.next();
